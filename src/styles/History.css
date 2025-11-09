@@ -1,0 +1,168 @@
+.history-container {
+  max-width: 896px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+.history-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.history-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.history-back-btn {
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: color 0.2s;
+  font-size: 16px;
+}
+
+.history-back-btn:hover {
+  color: #2563eb;
+}
+
+.history-empty {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.history-empty-icon {
+  color: #d1d5db;
+  margin: 0 auto 16px;
+}
+
+.history-empty-text {
+  color: #6b7280;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.history-empty-button {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 16px;
+  margin-top: 16px;
+}
+
+.history-empty-button:hover {
+  background-color: #1d4ed8;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.history-item {
+  border: 2px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 24px;
+  background-color: #dbeafe;
+  transition: box-shadow 0.2s;
+}
+
+.history-item:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.history-item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.history-item-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.history-item-date {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.history-delete-btn {
+  color: #ef4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.history-delete-btn:hover {
+  color: #dc2626;
+}
+
+.history-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item-subtitle {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.history-career {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+}
+
+.history-career-number {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.history-career-name {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.history-career-faculty {
+  font-size: 14px;
+  color: #4b5563;
+}

@@ -1,0 +1,233 @@
+.home-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 16px;
+  text-align: center;
+}
+
+.home-content {
+  margin-bottom: 32px;
+}
+
+.home-icon {
+  color: #2563eb;
+  margin: 0 auto 16px;
+}
+
+.home-title {
+  font-size: 48px;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.home-description {
+  font-size: 20px;
+  color: #4b5563;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.home-button {
+  background: linear-gradient(to right, #2563eb, #0891b2);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 9999px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.home-button:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.home-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-top: 64px;
+}
+
+.feature-card {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.feature-emoji {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.feature-card p {
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+/* Recent Tests Section */
+.home-recent {
+  background-color: white;
+  padding: 64px 0;
+}
+
+.recent-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.recent-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.recent-header svg {
+  color: #2563eb;
+}
+
+.recent-header h2 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.recent-empty {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.empty-icon {
+  color: #d1d5db;
+  margin: 0 auto 16px;
+}
+
+.empty-title {
+  color: #6b7280;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.empty-subtitle {
+  color: #9ca3af;
+}
+
+.recent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.recent-card {
+  background: linear-gradient(135deg, #dbeafe 0%, #cffafe 100%);
+  border-radius: 8px;
+  padding: 16px;
+  border: 2px solid #bfdbfe;
+  transition: box-shadow 0.2s;
+}
+
+.recent-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.recent-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.recent-card-header svg {
+  color: #2563eb;
+}
+
+.recent-username {
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.recent-date {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: auto;
+}
+
+.recent-careers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recent-career {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.career-number {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.career-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.career-faculty {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+/* About Section */
+.home-about {
+  padding: 64px 0;
+}
+
+.about-container {
+  max-width: 896px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.about-title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 32px;
+  color: #1f2937;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #374151;
+  line-height: 1.7;
+}
+
+.about-highlight {
+  text-align: center;
+  font-weight: 600;
+  color: #2563eb;
+  font-size: 20px;
+  margin-top: 32px;
+}

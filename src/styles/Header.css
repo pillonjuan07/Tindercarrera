@@ -1,0 +1,79 @@
+.header {
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo svg {
+  color: #2563eb;
+}
+
+.header-logo h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 8px;
+}
+
+.header-btn:hover {
+  color: #2563eb;
+}
+
+.header-btn-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .header-btn-text {
+    display: inline;
+  }
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+}
+
+.header-user span {
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  color: #dc2626;
+}

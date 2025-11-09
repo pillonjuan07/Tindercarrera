@@ -1,0 +1,98 @@
+.test-container {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+.test-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+}
+
+.test-progress-container {
+  margin-bottom: 24px;
+}
+
+.test-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.test-progress-text {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.test-progress-percent {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.test-progress-bar {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.test-progress-fill {
+  background: linear-gradient(to right, #2563eb, #0891b2);
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.test-question {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 24px;
+}
+
+.test-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.test-option {
+  width: 100%;
+  text-align: left;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 16px;
+  color: #374151;
+}
+
+.test-option:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  transform: scale(1.01);
+}
+
+.test-back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 24px;
+  padding: 8px 0;
+  transition: color 0.2s;
+}
+
+.test-back-button:hover {
+  color: #2563eb;
+}

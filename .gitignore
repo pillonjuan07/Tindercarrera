@@ -1,0 +1,17 @@
+# Ignorar dependencias
+node_modules/
+
+# Ignorar carpetas de compilación
+dist/
+build/
+.vite/
+
+# Ignorar archivos de entorno
+.env
+
+# Ignorar logs y temporales
+*.log
+.DS_Store
+
+# Ignorar archivos del sistema
+Thumbs.db

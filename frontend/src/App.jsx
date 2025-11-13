@@ -1,40 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import Login from './components/Login';
-import Home from './components/Home';
-import Test from './components/Test';
-import Result from './components/Result';
-import History from './components/History';
+// Importar componentes (se importan desde los archivos originales; los componentes exportan en español)
+import Encabezado from './components/Header';
+import InicioSesion from './components/Login';
+import Inicio from './components/Home';
+import Prueba from './components/Test';
+import Resultado from './components/Result';
+import Historial from './components/History';
 import { allQuestions } from './data/questions';
 import { careerDatabase } from './data/careers';
 
+// Componente principal de la app
 function App() {
-  const [currentScreen, setCurrentScreen] = useState('login');
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [result, setResult] = useState(null);
-  const [selectedQuestions, setSelectedQuestions] = useState([]);
-  const [username, setUsername] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
-  const [showHistory, setShowHistory] = useState(false);
-  const [allUsers, setAllUsers] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  // Sección 1: estados principales
+  const [pantallaActual, setPantallaActual] = useState('login');
+  const [preguntaActual, setPreguntaActual] = useState(0);
+  const [respuestas, setRespuestas] = useState({});
+  const [resultado, setResultado] = useState(null);
+  const [preguntasSeleccionadas, setPreguntasSeleccionadas] = useState([]);
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [usuarioActual, setUsuarioActual] = useState(null);
+  const [mostrarHistorial, setMostrarHistorial] = useState(false);
+  const [todosLosUsuarios, setTodosLosUsuarios] = useState({});
+  const [cargando, setCargando] = useState(false);
 
-  const getRandomQuestions = () => {
-    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 20);
+  // Sección 2: util - obtener preguntas aleatorias
+  const obtenerPreguntasAleatorias = () => {
+    const mezcladas = [...allQuestions].sort(() => Math.random() - 0.5);
+    return mezcladas.slice(0, 20);
   };
 
+  // Si entramos a la pantalla de prueba y no hay preguntas seleccionadas, las generamos
   useEffect(() => {
-    if (selectedQuestions.length === 0 && currentScreen === 'test') {
-      setSelectedQuestions(getRandomQuestions());
+    if (preguntasSeleccionadas.length === 0 && pantallaActual === 'test') {
+      setPreguntasSeleccionadas(obtenerPreguntasAleatorias());
     }
-  }, [currentScreen, selectedQuestions.length]);
+  }, [pantallaActual, preguntasSeleccionadas.length]);
 
-  const getAllUsersHistory = () => {
+  // Sección 3: obtener historial reciente de todos los usuarios (para mostrar en Home)
+  const obtenerHistorialTodosUsuarios = () => {
     const usersData = [];
-    Object.keys(allUsers).forEach(userKey => {
-      const user = allUsers[userKey];
+    Object.keys(todosLosUsuarios).forEach(userKey => {
+      const user = todosLosUsuarios[userKey];
       if (user.testHistory && user.testHistory.length > 0) {
         user.testHistory.forEach((test, testIndex) => {
           usersData.push({
@@ -51,145 +57,152 @@ function App() {
     return usersData.slice(0, 10);
   };
 
-  const handleLogin = () => {
-    if (username.trim() === '') {
+  // Sección 4: manejo de login
+  const manejarIngreso = () => {
+    if (nombreUsuario.trim() === '') {
       alert('Por favor, ingresá tu nombre de usuario');
       return;
     }
-    
-    setIsLoading(true);
-    
+
+    setCargando(true);
+
     setTimeout(() => {
-      const userKey = `user_${username.toLowerCase()}`;
-      let userData = allUsers[userKey];
-      
+      const userKey = `user_${nombreUsuario.toLowerCase()}`;
+      let userData = todosLosUsuarios[userKey];
+
       if (!userData) {
         userData = {
-          username: username,
+          username: nombreUsuario,
           testHistory: [],
           createdAt: new Date().toISOString()
         };
-        setAllUsers(prev => ({
+        setTodosLosUsuarios(prev => ({
           ...prev,
           [userKey]: userData
         }));
       }
-      
-      setCurrentUser(userData);
-      setCurrentScreen('home');
-      setIsLoading(false);
+
+      setUsuarioActual(userData);
+      setPantallaActual('home');
+      setCargando(false);
     }, 500);
   };
 
-  const handleLogout = () => {
-    setCurrentUser(null);
-    setCurrentScreen('login');
-    setUsername('');
+  // Sección 5: cerrar sesión
+  const manejarCerrarSesion = () => {
+    setUsuarioActual(null);
+    setPantallaActual('login');
+    setNombreUsuario('');
   };
 
-  const handleAnswer = (selectedOption) => {
-    const newAnswers = { ...answers, [currentQuestion]: selectedOption };
-    setAnswers(newAnswers);
+  // Sección 6: respuestas y navegación durante la prueba
+  const manejarRespuesta = (opcionSeleccionada) => {
+    const nuevasRespuestas = { ...respuestas, [preguntaActual]: opcionSeleccionada };
+    setRespuestas(nuevasRespuestas);
 
-    if (currentQuestion < selectedQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+    if (preguntaActual < preguntasSeleccionadas.length - 1) {
+      setPreguntaActual(preguntaActual + 1);
     } else {
-      calculateResult(newAnswers);
+      calcularResultado(nuevasRespuestas);
     }
   };
 
-  const calculateResult = (finalAnswers) => {
-    setIsLoading(true);
-    
+  // Sección 7: cálculo del resultado a partir de las respuestas
+  const calcularResultado = (respuestasFinales) => {
+    setCargando(true);
+
     setTimeout(() => {
-      const categoryScores = {};
-      
-      Object.values(finalAnswers).forEach(answer => {
+      const puntuacionesCategorias = {};
+
+      Object.values(respuestasFinales).forEach(answer => {
         answer.categories.forEach(category => {
-          categoryScores[category] = (categoryScores[category] || 0) + 1;
+          puntuacionesCategorias[category] = (puntuacionesCategorias[category] || 0) + 1;
         });
       });
 
-      const sortedCategories = Object.entries(categoryScores)
+      const categoriasOrdenadas = Object.entries(puntuacionesCategorias)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3);
 
-      const recommendedCareers = [];
-      sortedCategories.forEach(([category]) => {
+      const carrerasRecomendadas = [];
+      categoriasOrdenadas.forEach(([category]) => {
         if (careerDatabase[category]) {
-          recommendedCareers.push(...careerDatabase[category]);
+          carrerasRecomendadas.push(...careerDatabase[category]);
         }
       });
 
-      const testResult = {
+      const resultadoTest = {
         date: new Date().toISOString(),
-        careers: recommendedCareers.slice(0, 3)
+        careers: carrerasRecomendadas.slice(0, 3)
       };
 
-      setResult(testResult);
+      setResultado(resultadoTest);
 
-      const userKey = `user_${currentUser.username.toLowerCase()}`;
-      const updatedUser = {
-        ...currentUser,
-        testHistory: [...currentUser.testHistory, testResult]
+      const userKey = `user_${usuarioActual.username.toLowerCase()}`;
+      const usuarioActualizado = {
+        ...usuarioActual,
+        testHistory: [...usuarioActual.testHistory, resultadoTest]
       };
-      
-      setAllUsers(prev => ({
+
+      setTodosLosUsuarios(prev => ({
         ...prev,
-        [userKey]: updatedUser
+        [userKey]: usuarioActualizado
       }));
-      
-      setCurrentUser(updatedUser);
-      setCurrentScreen('result');
-      setIsLoading(false);
+
+      setUsuarioActual(usuarioActualizado);
+      setPantallaActual('result');
+      setCargando(false);
     }, 1000);
   };
 
-  const resetTest = () => {
-    setCurrentScreen('home');
-    setCurrentQuestion(0);
-    setAnswers({});
-    setResult(null);
-    setSelectedQuestions([]);
+  // Sección 8: reiniciar / volver al home
+  const reiniciarTest = () => {
+    setPantallaActual('home');
+    setPreguntaActual(0);
+    setRespuestas({});
+    setResultado(null);
+    setPreguntasSeleccionadas([]);
   };
 
-  const startTest = () => {
-    setSelectedQuestions(getRandomQuestions());
-    setCurrentScreen('test');
+  const iniciarPrueba = () => {
+    setPreguntasSeleccionadas(obtenerPreguntasAleatorias());
+    setPantallaActual('test');
   };
 
-  const goBack = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
+  const irAtras = () => {
+    if (preguntaActual > 0) {
+      setPreguntaActual(preguntaActual - 1);
     }
   };
 
-  const deleteHistoryItem = (index) => {
-    setIsLoading(true);
-    
+  // Sección 9: eliminar un elemento del historial del usuario actual
+  const eliminarElementoHistorial = (indice) => {
+    setCargando(true);
+
     setTimeout(() => {
-      const userKey = `user_${currentUser.username.toLowerCase()}`;
-      const updatedHistory = [...currentUser.testHistory];
-      updatedHistory.splice(index, 1);
-      
-      const updatedUser = {
-        ...currentUser,
-        testHistory: updatedHistory
+      const userKey = `user_${usuarioActual.username.toLowerCase()}`;
+      const historialActualizado = [...usuarioActual.testHistory];
+      historialActualizado.splice(indice, 1);
+
+      const usuarioActualizado = {
+        ...usuarioActual,
+        testHistory: historialActualizado
       };
-      
-      setAllUsers(prev => ({
+
+      setTodosLosUsuarios(prev => ({
         ...prev,
-        [userKey]: updatedUser
+        [userKey]: usuarioActualizado
       }));
-      
-      setCurrentUser(updatedUser);
-      setIsLoading(false);
+
+      setUsuarioActual(usuarioActualizado);
+      setCargando(false);
     }, 300);
   };
 
+  // Render
   return (
     <div className="app">
-      {isLoading && (
+      {cargando && (
         <div className="loading-overlay">
           <div className="loading-box">
             <div className="spinner"></div>
@@ -198,51 +211,51 @@ function App() {
         </div>
       )}
 
-      <Header 
-        currentUser={currentUser}
-        showHistory={showHistory}
-        setShowHistory={setShowHistory}
-        handleLogout={handleLogout}
+      <Encabezado
+        usuarioActual={usuarioActual}
+        mostrarHistorial={mostrarHistorial}
+        establecerMostrarHistorial={setMostrarHistorial}
+        manejarCerrarSesion={manejarCerrarSesion}
       />
 
       <main>
-        {currentScreen === 'login' && (
-          <Login 
-            username={username}
-            setUsername={setUsername}
-            handleLogin={handleLogin}
+        {pantallaActual === 'login' && (
+          <InicioSesion
+            nombreUsuario={nombreUsuario}
+            establecerNombreUsuario={setNombreUsuario}
+            manejarIngreso={manejarIngreso}
           />
         )}
 
-        {currentScreen === 'home' && !showHistory && (
-          <Home 
-            startTest={startTest}
-            allUsersHistory={getAllUsersHistory()}
+        {pantallaActual === 'home' && !mostrarHistorial && (
+          <Inicio
+            iniciarPrueba={iniciarPrueba}
+            historialUsuarios={obtenerHistorialTodosUsuarios()}
           />
         )}
 
-        {currentScreen === 'home' && showHistory && (
-          <History 
-            currentUser={currentUser}
-            setShowHistory={setShowHistory}
-            startTest={startTest}
-            deleteHistoryItem={deleteHistoryItem}
+        {pantallaActual === 'home' && mostrarHistorial && (
+          <Historial
+            usuarioActual={usuarioActual}
+            establecerMostrarHistorial={setMostrarHistorial}
+            iniciarPrueba={iniciarPrueba}
+            eliminarElementoHistorial={eliminarElementoHistorial}
           />
         )}
 
-        {currentScreen === 'test' && selectedQuestions.length > 0 && (
-          <Test 
-            currentQuestion={currentQuestion}
-            questions={selectedQuestions}
-            handleAnswer={handleAnswer}
-            goBack={goBack}
+        {pantallaActual === 'test' && preguntasSeleccionadas.length > 0 && (
+          <Prueba
+            preguntaActual={preguntaActual}
+            preguntas={preguntasSeleccionadas}
+            manejarRespuesta={manejarRespuesta}
+            irAtras={irAtras}
           />
         )}
 
-        {currentScreen === 'result' && result && (
-          <Result 
-            result={result}
-            resetTest={resetTest}
+        {pantallaActual === 'result' && resultado && (
+          <Resultado
+            resultado={resultado}
+            reiniciarTest={reiniciarTest}
           />
         )}
       </main>
@@ -252,22 +265,27 @@ function App() {
           <div className="footer-grid">
             <div>
               <h4>TinderCarrera</h4>
-              <p className="footer-text">
-                Ayudando a estudiantes de Tucumán a encontrar su vocación desde 2025
-              </p>
+              <p className="footer-text">Ayudando a estudiantes de Tucumán a encontrar su vocación desde 2025</p>
             </div>
             <div>
               <h4>Enlaces</h4>
               <ul className="footer-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#test">Test Vocacional</a></li>
-                <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                <li>
+                  <a href="#inicio">Inicio</a>
+                </li>
+                <li>
+                  <a href="#test">Test Vocacional</a>
+                </li>
+                <li>
+                  <a href="#sobre-nosotros">Sobre Nosotros</a>
+                </li>
               </ul>
             </div>
             <div>
               <h4>Contacto</h4>
               <p className="footer-text">
-                ¿Tenés dudas? Escribinos a<br />
+                ¿Tenés dudas? Escribinos a
+                <br />
                 <a href="mailto:info@tindercarrera.com">info@tindercarrera.com</a>
               </p>
             </div>

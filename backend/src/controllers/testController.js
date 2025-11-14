@@ -1,13 +1,18 @@
+// Importa la instancia de la base de datos SQLite
 import db from '../config/database.js';
 
+// Guarda el resultado de un test vocacional
 export const saveTestResult = (req, res) => {
   const { userId, careers } = req.body;
 
+  // Valida que los datos sean correctos
   if (!userId || !careers || !Array.isArray(careers)) {
     return res.status(400).json({ error: 'Datos inválidos' });
   }
 
+  // Ejecuta operaciones en serie para asegurar el orden
   db.serialize(() => {
+    // Inserta el test en la tabla 'tests'
     db.run(
       'INSERT INTO tests (user_id) VALUES (?)',
       [userId],
@@ -16,15 +21,19 @@ export const saveTestResult = (req, res) => {
           return res.status(500).json({ error: 'Error al guardar test' });
         }
 
-        const testId = this.lastID;
+        const testId = this.lastID; // ID del test recién creado
+
+        // Prepara la inserción de carreras recomendadas
         const stmt = db.prepare(
           'INSERT INTO recommended_careers (test_id, career_name, faculty, position) VALUES (?, ?, ?, ?)'
         );
 
+        // Inserta cada carrera con su posición
         careers.forEach((career, index) => {
           stmt.run(testId, career.name, career.faculty, index + 1);
         });
 
+        // Finaliza la inserción y responde al cliente
         stmt.finalize((err) => {
           if (err) {
             return res.status(500).json({ error: 'Error al guardar carreras' });
@@ -40,6 +49,7 @@ export const saveTestResult = (req, res) => {
   });
 };
 
+// Obtiene el historial de tests de un usuario
 export const getUserHistory = (req, res) => {
   const { userId } = req.params;
 
@@ -60,6 +70,7 @@ export const getUserHistory = (req, res) => {
         return res.status(500).json({ error: 'Error al obtener historial' });
       }
 
+      // Agrupa los resultados por test
       const tests = {};
       rows.forEach(row => {
         if (!tests[row.test_id]) {
@@ -83,6 +94,7 @@ export const getUserHistory = (req, res) => {
   );
 };
 
+// Obtiene los tests más recientes (limit configurable)
 export const getRecentTests = (req, res) => {
   const limit = req.query.limit || 10;
 
@@ -99,12 +111,13 @@ export const getRecentTests = (req, res) => {
     LEFT JOIN recommended_careers rc ON t.id = rc.test_id
     ORDER BY t.test_date DESC, rc.position ASC
     LIMIT ?`,
-    [limit * 3],
+    [limit * 3], // Multiplica por 3 para cubrir carreras por test
     (err, rows) => {
       if (err) {
         return res.status(500).json({ error: 'Error al obtener tests recientes' });
       }
 
+      // Agrupa por test y usuario
       const tests = {};
       rows.forEach(row => {
         if (!tests[row.test_id]) {
@@ -123,11 +136,13 @@ export const getRecentTests = (req, res) => {
         }
       });
 
+      // Devuelve solo los tests completos hasta el límite
       res.json(Object.values(tests).slice(0, limit));
     }
   );
 };
 
+// Elimina un test por ID
 export const deleteTest = (req, res) => {
   const { testId } = req.params;
 
